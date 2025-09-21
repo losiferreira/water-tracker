@@ -1,0 +1,13 @@
+# Global code owners
+* @losiferreira
+
+# Android-specific files
+*.kt @losiferreira
+*.xml @losiferreira
+*.gradle* @losiferreira
+
+# CI/CD files
+.github/workflows/ @losiferreira
+
+# Documentation
+*.md @losiferreira
