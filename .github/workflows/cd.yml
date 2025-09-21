@@ -52,7 +52,7 @@ jobs:
     - name: Rename APK
       run: |
         cd app/build/outputs/apk/release
-        mv app-release-unsigned.apk WaterTracker-${{ steps.version.outputs.version }}.apk
+        mv app-release.apk WaterTracker-${{ steps.version.outputs.version }}.apk
         
     - name: Create Release
       id: create_release
