@@ -39,9 +39,15 @@ jobs:
     - name: Build Release APK
       run: ./gradlew assembleRelease --no-daemon
 
-    - name: Decode keystore
+    - name: Generate temporary keystore
       run: |
-        echo "${{ secrets.SIGNING_KEY }}" | base64 -d > app/build/outputs/apk/release/release.jks
+        cd app/build/outputs/apk/release
+        keytool -genkeypair -v -keystore release.jks -storetype JKS \
+          -alias "${{ secrets.ALIAS }}" \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -keypass "${{ secrets.KEY_PASSWORD }}" \
+          -storepass "${{ secrets.KEY_STORE_PASSWORD }}" \
+          -dname "CN=WaterTracker, OU=Dev, O=WaterTracker, L=City, ST=State, C=US"
         
     - name: Sign APK with jarsigner
       run: |
