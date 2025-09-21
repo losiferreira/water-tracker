@@ -1,0 +1,126 @@
+name: Build APK (No Signing)
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on version tags like v1.0.0, v1.1.0, etc.
+  workflow_dispatch:  # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Cache Gradle dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+          
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+      
+    - name: Build Release APK
+      run: ./gradlew assembleRelease --no-daemon
+      
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --no-daemon
+        
+    - name: Determine version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="manual-$(date +'%Y%m%d-%H%M%S')"
+        else
+          VERSION="${{ github.ref_name }}"
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        
+    - name: Rename APKs
+      run: |
+        cd app/build/outputs/apk/release
+        mv app-release-unsigned.apk WaterTracker-${{ steps.version.outputs.version }}-release.apk
+        cd ../debug
+        mv app-debug.apk WaterTracker-${{ steps.version.outputs.version }}-debug.apk
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.version.outputs.version }}
+        release_name: WaterTracker ${{ steps.version.outputs.version }}
+        body: |
+          ## WaterTracker Android App - ${{ steps.version.outputs.version }}
+          
+          ### 🚀 Features
+          - 💧 **Water Tracking**: Beautiful progress visualization with animated gradients
+          - 📊 **History Screen**: View past water intake with gorgeous progress bars
+          - ⚙️ **Customizable Goals**: Set and update your daily water intake target
+          - 🫧 **Floating Bubble**: YouTube-style overlay with drag-to-remove functionality
+          - 🔄 **Real-time Updates**: Automatic synchronization between screens
+          - 🎨 **Modern UI**: Material 3 dark theme with smooth animations
+          - 📱 **Reactive Architecture**: Built with RxJava3, Room database, and Jetpack Compose
+          
+          ### 📱 Download Options
+          - **Release APK**: Optimized production build (recommended)
+          - **Debug APK**: Development build with debugging enabled
+          
+          ### 🛠️ Installation Instructions
+          1. Download the **Release APK** for best performance
+          2. Enable "Install from unknown sources" in Android Settings → Security
+          3. Install the downloaded APK file
+          4. Grant overlay permission when prompted (required for floating bubble)
+          
+          ### 📋 System Requirements
+          - **Android Version**: 7.0 (API 24) or higher
+          - **Permissions**: Overlay permission for floating bubble feature
+          - **Storage**: ~10MB free space
+          
+          ### 🏗️ Architecture
+          - **Frontend**: Jetpack Compose with Material 3
+          - **Backend**: Room database with RxJava3 reactive streams
+          - **Pattern**: MVVM with Clean Architecture
+          - **DI**: Koin dependency injection
+          
+          ---
+          
+          💡 **Tip**: Use the floating bubble to quickly add water without opening the app!
+          
+          🐛 **Found an issue?** [Report it here](https://github.com/losiferreira/water-tracker/issues)
+        draft: false
+        prerelease: false
+        
+    - name: Upload Release APK
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: app/build/outputs/apk/release/WaterTracker-${{ steps.version.outputs.version }}-release.apk
+        asset_name: WaterTracker-${{ steps.version.outputs.version }}-release.apk
+        asset_content_type: application/vnd.android.package-archive
+        
+    - name: Upload Debug APK
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: app/build/outputs/apk/debug/WaterTracker-${{ steps.version.outputs.version }}-debug.apk
+        asset_name: WaterTracker-${{ steps.version.outputs.version }}-debug.apk
+        asset_content_type: application/vnd.android.package-archive
