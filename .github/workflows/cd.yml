@@ -58,69 +58,45 @@ jobs:
         
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ steps.version.outputs.version }}
-        release_name: WaterTracker ${{ steps.version.outputs.version }}
+        name: WaterTracker ${{ steps.version.outputs.version }}
         body: |
           ## WaterTracker Android App - ${{ steps.version.outputs.version }}
           
-          ### 🚀 Features
-          - 💧 **Water Tracking**: Beautiful progress visualization with animated gradients
-          - 📊 **History Screen**: View past water intake with gorgeous progress bars
-          - ⚙️ **Customizable Goals**: Set and update your daily water intake target
-          - 🫧 **Floating Bubble**: YouTube-style overlay with drag-to-remove functionality
-          - 🔄 **Real-time Updates**: Automatic synchronization between screens
-          - 🎨 **Modern UI**: Material 3 dark theme with smooth animations
-          - 📱 **Reactive Architecture**: Built with RxJava3, Room database, and Jetpack Compose
+          ### Features
+          - Water intake tracking with progress visualization
+          - History screen showing past daily intake
+          - Customizable daily water intake goals
+          - Floating bubble overlay for quick water logging
+          - Real-time updates between screens
+          - Material 3 dark theme
           
-          ### 📱 Download Options
+          ### Download Options
           - **Release APK**: Optimized production build (recommended)
           - **Debug APK**: Development build with debugging enabled
           
-          ### 🛠️ Installation Instructions
-          1. Download the **Release APK** for best performance
+          ### Installation Instructions
+          1. Download the Release APK from the assets below
           2. Enable "Install from unknown sources" in Android Settings → Security
           3. Install the downloaded APK file
-          4. Grant overlay permission when prompted (required for floating bubble)
+          4. Grant overlay permission when prompted (needed for floating bubble)
           
-          ### 📋 System Requirements
-          - **Android Version**: 7.0 (API 24) or higher
-          - **Permissions**: Overlay permission for floating bubble feature
-          - **Storage**: ~10MB free space
+          ### System Requirements
+          - Android 7.0 (API 24) or higher
+          - Overlay permission for floating bubble feature
+          - ~10MB free space
           
-          ### 🏗️ Architecture
-          - **Frontend**: Jetpack Compose with Material 3
-          - **Backend**: Room database with RxJava3 reactive streams
-          - **Pattern**: MVVM with Clean Architecture
-          - **DI**: Koin dependency injection
+          ### Architecture
+          - Frontend: Jetpack Compose with Material 3
+          - Database: Room with RxJava3 reactive streams
+          - Pattern: MVVM with Clean Architecture
+          - DI: Koin dependency injection
           
-          ---
-          
-          💡 **Tip**: Use the floating bubble to quickly add water without opening the app!
-          
-          🐛 **Found an issue?** [Report it here](https://github.com/losiferreira/water-tracker/issues)
+          Found an issue? [Report it here](https://github.com/losiferreira/water-tracker/issues)
+        files: |
+          app/build/outputs/apk/release/WaterTracker-${{ steps.version.outputs.version }}-release.apk
+          app/build/outputs/apk/debug/WaterTracker-${{ steps.version.outputs.version }}-debug.apk
         draft: false
         prerelease: false
-        
-    - name: Upload Release APK
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: app/build/outputs/apk/release/WaterTracker-${{ steps.version.outputs.version }}-release.apk
-        asset_name: WaterTracker-${{ steps.version.outputs.version }}-release.apk
-        asset_content_type: application/vnd.android.package-archive
-        
-    - name: Upload Debug APK
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: app/build/outputs/apk/debug/WaterTracker-${{ steps.version.outputs.version }}-debug.apk
-        asset_name: WaterTracker-${{ steps.version.outputs.version }}-debug.apk
-        asset_content_type: application/vnd.android.package-archive
