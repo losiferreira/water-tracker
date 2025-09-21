@@ -1,15 +1,15 @@
-# WaterTracker 💧
+# WaterTracker
 
-A beautiful Android water intake tracking app built with Jetpack Compose and Material 3 design.
+An Android app for tracking daily water intake, built with Jetpack Compose.
 
-## Features 🚀
+## Features
 
-- 💧 **Water Tracking**: Beautiful progress visualization with animated gradients
-- 📊 **History Screen**: View past water intake with gorgeous progress bars  
-- ⚙️ **Customizable Goals**: Set and update your daily water intake target
-- 🫧 **Floating Bubble**: YouTube-style overlay with drag-to-remove functionality
-- 🔄 **Real-time Updates**: Automatic synchronization between screens
-- 🎨 **Modern UI**: Material 3 dark theme with smooth animations
+- Water intake tracking with progress visualization
+- History screen showing past daily intake
+- Customizable daily water intake goals
+- Floating bubble overlay for quick water logging
+- Real-time updates between screens
+- Material 3 dark theme
 
 ## Screenshots 📱
 
@@ -21,23 +21,23 @@ A beautiful Android water intake tracking app built with Jetpack Compose and Mat
 Visit the [Releases page](https://github.com/losiferreira/water-tracker/releases) to download the latest APK.
 
 ### Installation Instructions
-1. Download the **Release APK** for best performance
+1. Download the Release APK from the releases page
 2. Enable "Install from unknown sources" in Android Settings → Security
 3. Install the downloaded APK file
-4. Grant overlay permission when prompted (required for floating bubble)
+4. Grant overlay permission when prompted (needed for floating bubble)
 
-## System Requirements 📋
+## System Requirements
 
-- **Android Version**: 7.0 (API 24) or higher
-- **Permissions**: Overlay permission for floating bubble feature
-- **Storage**: ~10MB free space
+- Android 7.0 (API 24) or higher
+- Overlay permission for floating bubble feature
+- ~10MB free space
 
-## Architecture 🏗️
+## Architecture
 
-- **Frontend**: Jetpack Compose with Material 3
-- **Backend**: Room database with RxJava3 reactive streams
-- **Pattern**: MVVM with Clean Architecture
-- **DI**: Koin dependency injection
+- Frontend: Jetpack Compose with Material 3
+- Database: Room with RxJava3 reactive streams
+- Pattern: MVVM with Clean Architecture
+- DI: Koin dependency injection
 
 ### Tech Stack
 - Kotlin
@@ -48,7 +48,7 @@ Visit the [Releases page](https://github.com/losiferreira/water-tracker/releases
 - Koin DI
 - Android Architecture Components
 
-## Development 👨‍💻
+## Development
 
 ### Building the Project
 ```bash
@@ -63,28 +63,24 @@ cd water-tracker
 3. GitHub Actions will automatically build and create a release
 
 ### Manual Release
-You can also trigger a manual build from the GitHub Actions tab using the "Build APK (No Signing)" workflow.
+You can trigger a manual build from the GitHub Actions tab.
 
-## Contributing 🤝
+## Contributing
 
 1. Fork the project
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -m 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
 5. Open a Pull Request
 
-## Issues 🐛
+## Issues
 
-Found a bug or have a suggestion? [Open an issue](https://github.com/losiferreira/water-tracker/issues)!
+Found a bug or have a suggestion? [Open an issue](https://github.com/losiferreira/water-tracker/issues).
 
-## License 📄
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is open source. See the LICENSE file for details.
 
-## Author ✨
+## Author
 
-**Losi Ferreira** - [@losiferreira](https://github.com/losiferreira)
-
----
-
-💡 **Tip**: Use the floating bubble to quickly add water without opening the app!
+Losi Ferreira - [@losiferreira](https://github.com/losiferreira)
