@@ -35,9 +35,17 @@ jobs:
           
     - name: Make gradlew executable
       run: chmod +x gradlew
+
+    - name: Decode Keystore
+      run: |
+        echo "${{ secrets.SIGNING_KEYSTORE }}" | base64 -d > app/release-key.keystore
       
     - name: Build Release APK
       run: ./gradlew assembleRelease --no-daemon
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         
     - name: Determine version
       id: version

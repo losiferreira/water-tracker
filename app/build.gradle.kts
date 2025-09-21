@@ -20,10 +20,10 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = "water-tracker"
-            keyPassword = "android"
+            keyAlias = System.getenv("KEY_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
             storeFile = file("release-key.keystore")
-            storePassword = "android"
+            storePassword = System.getenv("KEYSTORE_PASSWORD")
         }
     }
 
