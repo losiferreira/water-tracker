@@ -1,11 +1,11 @@
 package com.losiferreira.watertracker.domain.usecase
 
-import com.losiferreira.watertracker.data.repository.WaterEntryRepositoryImpl
+import com.losiferreira.watertracker.domain.repository.WaterEntryRepository
 import io.reactivex.rxjava3.core.Completable
 import java.time.LocalDate
 
 class DatabaseMaintenanceUseCase(
-    private val repository: WaterEntryRepositoryImpl
+    private val repository: WaterEntryRepository
 ) {
     fun cleanDuplicateZeroEntries(): Completable {
         return repository.removeDuplicateZeroEntries()

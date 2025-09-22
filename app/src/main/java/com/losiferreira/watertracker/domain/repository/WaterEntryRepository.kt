@@ -17,4 +17,6 @@ interface WaterEntryRepository {
     fun saveEntry(entry: WaterEntry): Completable
     fun deleteEntry(entry: WaterEntry): Completable
     fun deleteEntryByDate(date: LocalDate): Completable
+    fun removeDuplicateZeroEntries(): Completable
+    fun updateMillilitersByDate(date: LocalDate, milliliters: Int): Completable
 }

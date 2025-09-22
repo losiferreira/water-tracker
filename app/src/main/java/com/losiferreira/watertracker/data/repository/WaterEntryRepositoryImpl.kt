@@ -64,11 +64,11 @@ class WaterEntryRepositoryImpl(
         return waterEntryDao.deleteEntryByDate(date)
     }
 
-    fun removeDuplicateZeroEntries(): Completable {
+    override fun removeDuplicateZeroEntries(): Completable {
         return waterEntryDao.removeDuplicateZeroEntries()
     }
 
-    fun updateMillilitersByDate(date: LocalDate, milliliters: Int): Completable {
+    override fun updateMillilitersByDate(date: LocalDate, milliliters: Int): Completable {
         return waterEntryDao.updateMillilitersByDate(date, milliliters)
     }
 }

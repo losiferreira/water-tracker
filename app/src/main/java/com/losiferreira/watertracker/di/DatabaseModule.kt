@@ -11,7 +11,9 @@ val databaseModule = module {
             androidContext(),
             WaterTrackerDatabase::class.java,
             WaterTrackerDatabase.DATABASE_NAME
-        ).build()
+        )
+        .fallbackToDestructiveMigration()
+        .build()
     }
 
     single { get<WaterTrackerDatabase>().waterEntryDao() }
