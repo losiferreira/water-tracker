@@ -49,11 +49,8 @@ class WaterEntryRepositoryImpl(
 
     override fun saveEntry(entry: WaterEntry): Completable {
         val entity = WaterEntryMapper.toEntity(entry)
-        return if (entry.id == 0L) {
-            waterEntryDao.insertEntry(entity)
-        } else {
-            waterEntryDao.updateEntry(entity)
-        }
+        // Always use upsert to prevent duplicates - will update if date exists, insert if not
+        return waterEntryDao.upsertEntry(entity)
     }
 
     override fun deleteEntry(entry: WaterEntry): Completable {

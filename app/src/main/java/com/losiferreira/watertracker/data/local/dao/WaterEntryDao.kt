@@ -29,7 +29,7 @@ interface WaterEntryDao {
     fun observeEntriesByMonth(yearMonth: String): Flowable<List<WaterEntryEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertEntry(entry: WaterEntryEntity): Completable
+    fun upsertEntry(entry: WaterEntryEntity): Completable
 
     @Update
     fun updateEntry(entry: WaterEntryEntity): Completable

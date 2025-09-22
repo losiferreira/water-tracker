@@ -11,7 +11,7 @@ import com.losiferreira.watertracker.data.local.entity.WaterEntryEntity
 
 @Database(
     entities = [WaterEntryEntity::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(DateConverter::class)
