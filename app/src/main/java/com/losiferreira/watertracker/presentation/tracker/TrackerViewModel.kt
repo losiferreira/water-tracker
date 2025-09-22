@@ -17,6 +17,7 @@ class TrackerViewModel(
     private val removeWaterUseCase: RemoveWaterUseCase,
     private val dailyRolloverUseCase: DailyRolloverUseCase,
     private val databaseMaintenanceUseCase: DatabaseMaintenanceUseCase,
+    private val oneTimeDataRestorationUseCase: OneTimeDataRestorationUseCase,
     private val dailyGoal: DailyGoal
 ) : ViewModel() {
 
@@ -35,6 +36,9 @@ class TrackerViewModel(
         
         // One-time maintenance to fix bug and update yesterday's data
         performDatabaseMaintenance()
+        
+        // One-time data restoration (only runs once using SharedPreferences)
+        restoreDataOneTime()
     }
 
     private fun observeWaterEntry() {
@@ -166,6 +170,21 @@ class TrackerViewModel(
                 },
                 { error ->
                     // Handle error silently or log it
+                }
+            )
+        disposables.add(disposable)
+    }
+
+    private fun restoreDataOneTime() {
+        val disposable = oneTimeDataRestorationUseCase.restoreDataIfNeeded()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { 
+                    // Data restored successfully (or already existed)
+                },
+                { error ->
+                    // Handle error silently
                 }
             )
         disposables.add(disposable)
