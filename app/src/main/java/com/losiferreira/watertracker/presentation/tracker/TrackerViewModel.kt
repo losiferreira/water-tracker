@@ -16,6 +16,7 @@ class TrackerViewModel(
     private val addWaterUseCase: AddWaterUseCase,
     private val removeWaterUseCase: RemoveWaterUseCase,
     private val dailyRolloverUseCase: DailyRolloverUseCase,
+    private val databaseMaintenanceUseCase: DatabaseMaintenanceUseCase,
     private val dailyGoal: DailyGoal
 ) : ViewModel() {
 
@@ -31,6 +32,9 @@ class TrackerViewModel(
         observeUiEvents()
         observeSaveToHistory()
         performDailyRollover()
+        
+        // One-time maintenance to fix bug and update yesterday's data
+        performDatabaseMaintenance()
     }
 
     private fun observeWaterEntry() {
@@ -118,6 +122,7 @@ class TrackerViewModel(
         disposables.add(disposable)
     }
 
+
     private fun observeSaveToHistory() {
         // Debounce saves to history by 1 second
         val disposable = saveToHistorySubject
@@ -148,6 +153,22 @@ class TrackerViewModel(
 
     fun onEvent(event: TrackerUiEvent) {
         uiEventSubject.onNext(event)
+    }
+
+    fun performDatabaseMaintenance() {
+        // Execute maintenance: clean duplicates and fix yesterday's entry to 2600ml
+        val disposable = databaseMaintenanceUseCase.performMaintenance(2600)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { 
+                    // Maintenance completed successfully
+                },
+                { error ->
+                    // Handle error silently or log it
+                }
+            )
+        disposables.add(disposable)
     }
 
     override fun onCleared() {

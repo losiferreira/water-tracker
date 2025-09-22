@@ -6,6 +6,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
-    viewModel { TrackerViewModel(get(), get(), get(), get(), get()) }
+    viewModel { TrackerViewModel(get(), get(), get(), get(), get(), get()) }
     viewModel { HistoryViewModel(get()) }
 }

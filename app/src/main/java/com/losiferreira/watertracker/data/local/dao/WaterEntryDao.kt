@@ -39,4 +39,10 @@ interface WaterEntryDao {
 
     @Query("DELETE FROM water_entries WHERE date = :date")
     fun deleteEntryByDate(date: LocalDate): Completable
+
+    @Query("DELETE FROM water_entries WHERE milliliters = 0 AND id NOT IN (SELECT MIN(id) FROM water_entries WHERE milliliters = 0 GROUP BY date)")
+    fun removeDuplicateZeroEntries(): Completable
+
+    @Query("UPDATE water_entries SET milliliters = :milliliters WHERE date = :date")
+    fun updateMillilitersByDate(date: LocalDate, milliliters: Int): Completable
 }

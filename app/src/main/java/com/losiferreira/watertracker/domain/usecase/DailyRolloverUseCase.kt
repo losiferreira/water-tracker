@@ -34,11 +34,12 @@ class DailyRolloverUseCase(
 
     fun checkAndPerformRollover(): Completable {
         val today = dateManager.getCurrentDate()
-        val yesterday = dateManager.getYesterday()
         
-        return repository.getEntryByDate(yesterday)
-            .flatMapCompletable { yesterdayEntry ->
-                if (yesterdayEntry.milliliters > 0) {
+        return repository.getEntryByDate(today)
+            .isEmpty
+            .flatMapCompletable { isTodayEmpty ->
+                if (isTodayEmpty) {
+                    // Only create today's entry if it doesn't exist yet
                     val todayEntry = WaterEntry(date = today, milliliters = 0)
                     repository.saveEntry(todayEntry)
                 } else {

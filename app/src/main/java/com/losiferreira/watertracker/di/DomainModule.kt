@@ -14,4 +14,5 @@ val domainModule = module {
     factory { RemoveWaterUseCase(get(), get()) }
     factory { GetHistoryUseCase(get()) }
     factory { DailyRolloverUseCase(get(), get()) }
+    factory { DatabaseMaintenanceUseCase(get()) }
 }
