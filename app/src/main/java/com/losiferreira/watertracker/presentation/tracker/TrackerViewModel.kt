@@ -33,8 +33,8 @@ class TrackerViewModel(
         observeSaveToHistory()
         performDailyRollover()
         
-        // One-time data restoration after database reset
-        restoreLostData()
+        // One-time maintenance to fix bug and update yesterday's data
+        performDatabaseMaintenance()
     }
 
     private fun observeWaterEntry() {
@@ -163,22 +163,6 @@ class TrackerViewModel(
             .subscribe(
                 { 
                     // Maintenance completed successfully
-                },
-                { error ->
-                    // Handle error silently or log it
-                }
-            )
-        disposables.add(disposable)
-    }
-
-    private fun restoreLostData() {
-        // Restore data lost during database migration
-        val disposable = databaseMaintenanceUseCase.restoreLostData()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { 
-                    // Data restored successfully
                 },
                 { error ->
                     // Handle error silently or log it
