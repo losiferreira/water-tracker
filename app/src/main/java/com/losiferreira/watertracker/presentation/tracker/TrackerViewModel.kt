@@ -33,8 +33,7 @@ class TrackerViewModel(
         observeSaveToHistory()
         performDailyRollover()
         
-        // One-time data restoration after database reset
-        restoreLostData()
+        // Data restoration completed - removed to prevent duplicate entries
     }
 
     private fun observeWaterEntry() {
